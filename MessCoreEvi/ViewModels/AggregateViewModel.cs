@@ -6,6 +6,7 @@
         public decimal MaxValue { get; set; }
         public decimal SumValue { get; set; }
         public decimal AvgValue { get; set; }
+        public string AvgValueFormatted => AvgValue.ToString("F2");
         public ICollection<GroupByViewModel> GroupByResult { get; set; }
     }
 
