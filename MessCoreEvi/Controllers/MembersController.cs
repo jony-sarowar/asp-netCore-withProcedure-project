@@ -50,7 +50,7 @@ namespace MessCoreEvi.Controllers
 
             }
             return RedirectToAction("Index");
-        }
+        } 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
