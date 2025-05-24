@@ -1,0 +1,29 @@
+﻿@model IEnumerable<RoomHeadCount>
+
+<h4>Member Count by Room</h4>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Room Name</th>
+                <th>Member Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.RoomName</td>
+                    <td>@item.Count</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No Course count data available.</p>
+}
+

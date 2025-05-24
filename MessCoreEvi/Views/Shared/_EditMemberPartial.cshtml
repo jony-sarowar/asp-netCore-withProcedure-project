@@ -1,0 +1,110 @@
+﻿@model MessCoreEvi.ViewModels.MemberViewModel
+<link href="~/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<div class="modal-header">
+    <h4 class="modal-title">Member</h4>
+</div>
+<div class="modal-body">
+    <form asp-action="EditMember" asp-controller="Members" enctype="multipart/form-data" method="post">
+        <div class="row">
+            <input type="hidden" name="MemberId" value="@Model.MemberId" />
+            <input type="hidden" name="OldImageUrl" value="@Model.ImgUrl" />
+            <div class="col-md-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <h2>Member Info</h2>
+
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Mobile" class="control-label"></label>
+                    <input asp-for="Mobile" class="form-control" />
+                    <span asp-validation-for="Mobile" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Amount" class="control-label"></label>
+                    <input asp-for="Amount" class="form-control" />
+                    <span asp-validation-for="Amount" class="text-danger"></span>
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="IsPermanent" /> @Html.DisplayNameFor(model => model.IsPermanent)
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Date" class="control-label"></label>
+                    <input asp-for="Date" class="form-control" />
+                    <span asp-validation-for="Date" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <img src="~/images/@Model.ImgUrl" id="imageFile" width="50" />
+                    <label asp-for="ProfileFile" class="control-label"></label>
+                    <input type="file" name="ProfileFile" id="ProfileFile" onchange="readUrl(this)" />
+
+                </div>
+                <div class="form-group">
+                    <label asp-for="RoomId" class="control-label"></label>
+                    <select asp-for="RoomId" class="form-control" asp-items="@(new SelectList(Model.Rooms,"RoomId","RoomName"))">
+                        <option value="value">--select--</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h2>Facility</h2>
+                <button type="button" class="btn btn-info mb-2" onclick="AddFacility()">Add Facility</button>
+                @Html.Partial("_AddFacility", Model.Facilities)
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-success">Update</button>
+        </div>
+    </form>
+</div>
+<script src="~/jquery/jquery.min.js"></script>
+<script>
+    function readUrl(i) {
+        if (i.files && i.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                e.preventDefault();
+                $('#imageFile').attr('src', e.target.result)
+            }
+        }
+        reader.readAsDataURL(i.files[0]);
+        FacilityUpIndex();
+    }
+
+    function deleteRow(btn) {
+        $(btn).closest('tr').remove();
+        FacilityUpIndex();
+    }
+
+    function AddFacility() {
+        var lastIndex = parseInt($('#Hindex').val());
+        var newRow = `
+         <tr>
+             <td><input type="text" class="form-control" name="Facilities[${lastIndex}].FacilityName" value="" /></td>
+            <td><button type="button" class="btn btn-danger" onclick="deleteRow(this)">Delete</button></td>
+        </tr>
+            `;
+        $('#Extable tbody').append(newRow);
+        $('#Hindex').val(lastIndex + 1);
+        FacilityUpIndex();
+    }
+    function FacilityUpIndex()
+    {
+        $('#Extable tbody tr').each(function(index){
+            $(this).find("input[name^=Facilities]").each(function(){
+                var name = $(this).attr("name");
+                name = name.replace(/Facilities\[\d+\]/,"Facilities["+index+"]")
+                $(this).attr("name",name)
+            })
+        })
+    }
+
+</script>
+
+
+

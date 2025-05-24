@@ -1,0 +1,19 @@
+﻿@model List<MessCoreEvi.Models.Facility>
+<table class="table table-bordered" id="Extable">
+    <thead>
+        <tr>
+            <th>Facility</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <tr>
+                <td><input type="text" class="form-control" name="Facilities[@i].FacilityName" value="@Model[i].FacilityName" /></td>
+                <td><button type="button" class="btn btn-danger" onclick="deleteRow(this)">Delete</button></td>
+            </tr>
+        }
+    </tbody>
+</table>
+<input type="hidden" id="Hindex" value="@Model.Count" />
